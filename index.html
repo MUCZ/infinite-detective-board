@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1c2428" />
+  <title>THREAD — Infinite Detective Board</title>
+  <meta name="description" content="Follow the threads. An infinite canvas for clues, suspects, evidence, and the connections between them." />
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Board navigation">
+      <div class="brand"><div class="brand-mark"><span class="brand-mark-inner">✳</span></div><div class="brand-word">THREAD<span class="brand-period">.</span></div></div>
+      <div class="sidebar-top"><span class="eyebrow sidebar-eyebrow">WORKSPACE <span class="eyebrow-line"></span></span>
+        <div class="workspace-card"><span class="workspace-avatar">B</span><div><strong>Blackwell files</strong><small>Personal workspace</small></div><span class="workspace-chevron">⌄</span></div>
+      </div>
+      <div class="sidebar-section"><div class="sidebar-label">INVESTIGATIONS <span>01</span></div>
+        <div class="case-nav active"><span class="case-nav-symbol">⌕</span><span>The Vanishing at<br />Blackwell</span><span class="case-nav-arrow">↗</span></div>
+      </div>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section palette"><div class="sidebar-label">ADD TO BOARD <span>＋</span></div>
+        <button data-add="suspect" class="palette-button"><span class="palette-icon suspect-icon">◈</span><span>Person</span><span class="palette-plus">＋</span></button>
+        <button data-add="clue" class="palette-button"><span class="palette-icon clue-icon">✳</span><span>Clue</span><span class="palette-plus">＋</span></button>
+        <button data-add="evidence" class="palette-button"><span class="palette-icon evidence-icon">◇</span><span>Evidence</span><span class="palette-plus">＋</span></button>
+        <button data-add="location" class="palette-button"><span class="palette-icon location-icon">⌖</span><span>Location</span><span class="palette-plus">＋</span></button>
+        <button data-add="note" class="palette-button"><span class="palette-icon note-icon">✎</span><span>Note</span><span class="palette-plus">＋</span></button>
+      </div>
+      <div class="sidebar-bottom"><div class="sidebar-quote"><span class="quote-mark">“</span><p>The truth is rarely pure and never simple.</p><span class="quote-author">— OSCAR WILDE</span></div>
+        <div class="sidebar-user"><div class="user-avatar">CM</div><div><strong>Investigator</strong><small>Your private case board</small></div><span class="user-more">···</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar"><div class="topbar-left"><div class="breadcrumb">WORKSPACE <span>/</span> INVESTIGATIONS <span>/</span> <strong>CASE 001</strong></div>
+        <div class="title-row"><h1 id="case-title" title="Click to rename this case">The Vanishing at Blackwell</h1><span class="live-badge"><span class="live-dot"></span> ACTIVE CASE</span></div></div>
+        <div class="topbar-actions"><span class="save-indicator"><span class="save-dot"></span><span id="save-status">All changes saved</span></span><span class="topbar-rule"></span>
+          <button id="import-button" class="top-button text-button" title="Import a board JSON file">↥ <span>Import</span></button>
+          <button id="export-button" class="top-button export-button" title="Download a board JSON file">↧ <span>Export board</span></button>
+          <input id="import-input" type="file" accept="application/json,.json" hidden />
+        </div>
+      </header>
+      <div class="subbar"><div class="subbar-left"><span class="subbar-icon">◉</span><span>INVESTIGATION BOARD</span><span class="subbar-separator"></span><span id="case-count" class="subbar-count">8 leads · 8 connections</span></div>
+        <div class="subbar-right"><span class="board-access"><span></span> PRIVATE BOARD</span><span class="subbar-separator"></span><span>CASE #001</span></div></div>
+      <div class="workspace">
+        <section id="canvas" class="canvas" aria-label="Infinite detective board">
+          <div class="canvas-noise"></div>
+          <div class="canvas-top-left"><div class="floating-toolbar" role="toolbar" aria-label="Board tools">
+            <button data-mode="select" class="tool-button active" title="Select (V)" aria-label="Select tool" aria-pressed="true"><span class="tool-glyph">↖</span></button>
+            <button data-mode="pan" class="tool-button" title="Pan (H or Space)" aria-label="Pan tool" aria-pressed="false"><span class="tool-glyph">✋</span></button>
+            <span class="toolbar-divider"></span>
+            <button data-mode="connect" class="tool-button" title="Connect (C)" aria-label="Connect tool" aria-pressed="false"><span class="tool-glyph connect-glyph">⌁</span></button>
+            <span class="toolbar-divider"></span>
+            <button id="undo-button" class="tool-button" title="Undo (⌘ Z)" aria-label="Undo"><span class="tool-glyph">↶</span></button>
+            <button id="redo-button" class="tool-button" title="Redo (⌘ ⇧ Z)" aria-label="Redo"><span class="tool-glyph">↷</span></button>
+          </div><span class="tool-tip">SELECT, CONNECT &amp; EXPLORE</span></div>
+          <div class="canvas-top-right"><div class="search-wrap"><span class="search-icon">⌕</span><input id="search-input" type="search" autocomplete="off" placeholder="Search your board..." aria-label="Search board" /><span id="search-count" class="search-count">⌘ K</span></div></div>
+          <div id="world" class="world"><svg id="links-layer" class="links-layer" aria-label="Connections"></svg><div id="cards-layer" class="cards-layer"></div></div>
+          <div class="canvas-bottom-left"><span class="canvas-coordinate"><span class="coord-cross">⌖</span> INFINITE CANVAS</span><span class="canvas-separator"></span><span id="mode-hint">Drag cards to arrange · Scroll to zoom · Space to pan</span></div>
+          <div class="canvas-bottom-right"><div class="minimap"><div class="minimap-heading"><span>OVERVIEW</span><span class="minimap-dots">···</span></div><svg id="minimap-svg" viewBox="0 0 200 121" role="img" aria-label="Board overview; click to navigate"></svg></div>
+            <div class="zoom-controls"><button id="zoom-out" title="Zoom out" aria-label="Zoom out">−</button><span id="zoom-value">100%</span><button id="zoom-in" title="Zoom in" aria-label="Zoom in">＋</button><span class="zoom-divider"></span><button id="zoom-fit" title="Fit board (0)" aria-label="Fit board">⛶</button></div></div>
+        </section>
+        <aside id="inspector" class="inspector" aria-label="Case file details"></aside>
+      </div>
+      <footer class="statusbar"><div><span class="status-symbol">✳</span> A LITTLE CLOSER TO THE TRUTH <span class="status-line"></span></div><div><span id="card-count">8</span> LEADS <span class="status-divider">/</span> <span id="link-count">8</span> CONNECTIONS <button id="reset-button" title="Reset to sample board">RESET DEMO</button></div></footer>
+    </main>
+  </div>
+  <script type="module" src="./src/app.js"></script>
+</body>
+</html>

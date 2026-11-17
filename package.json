@@ -1,0 +1,13 @@
+{
+  "name": "infinite-detective-board",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An infinite canvas for connecting clues, people, places, and theories.",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "test": "node --test test/*.test.js",
+    "check": "node --check src/board.js && node --check src/demo.js && node --check src/app.js && npm test"
+  },
+  "engines": { "node": ">=20" }
+}
