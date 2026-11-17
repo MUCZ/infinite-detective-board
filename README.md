@@ -2,7 +2,20 @@
 
 A small, dependency-free investigation canvas for arranging leads and following the connections between them. Built with native browser modules, CSS, SVG, and local storage.
 
+[Try the live demo](https://mucz.github.io/infinite-detective-board/)
+
 ![Sample investigation board](docs/screenshots/board-overview.png)
+
+<details>
+<summary>More UI screenshots</summary>
+
+### Inspect a lead
+![Lead details inspector](docs/screenshots/lead-details.png)
+
+### Connect two leads
+![Named connection and inspector](docs/screenshots/connect-leads.png)
+
+</details>
 
 ## Run it
 
