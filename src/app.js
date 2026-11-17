@@ -1,5 +1,5 @@
 import {
-  CARD_SIZE, CARD_TYPES, addCard, bringToFront, commitFrom, connect, createHistory,
+  CARD_SIZE, CARD_TYPES, addCard, commitFrom, connect, createHistory,
   fitViewport, getBounds, getCard, moveCards, panViewport, parseBoard, pushHistory,
   redo, removeCards, removeLinks, replacePresent, screenToWorld, searchCards,
   serializeBoard, undo, updateCard, updateLink, worldToScreen, zoomAt,
@@ -249,12 +249,9 @@ canvas.addEventListener("pointerdown", (event) => {
     }
     if (!selected.has(id) || event.shiftKey) selectCard(id, event.shiftKey);
     if (!selected.has(id)) return;
-    // Raise the clicked card without creating a separate undo step.
     const base = history.present;
-    const front = bringToFront(base, id);
-    history = replacePresent(history, front);
     gesture = { type: "card", startX: event.clientX, startY: event.clientY, base,
-      ids: [...selected], moved: false, front };
+      ids: [...selected], moved: false };
     event.preventDefault(); return;
   }
   if (!cardElement && !linkElement && mode === "select" && !spaceDown && event.button === 0) {
@@ -273,7 +270,7 @@ window.addEventListener("pointermove", (event) => {
     renderViewport();
   } else {
     if (Math.abs(dx) + Math.abs(dy) > 2) gesture.moved = true;
-    history = replacePresent(history, moveCards(gesture.front, gesture.ids, dx / viewport.zoom, dy / viewport.zoom));
+    history = replacePresent(history, moveCards(gesture.base, gesture.ids, dx / viewport.zoom, dy / viewport.zoom));
     renderLinks(); renderCards(); renderMinimap();
   }
 });
@@ -365,12 +362,12 @@ inspector.addEventListener("focusout", (event) => {
   if (!["card-title", "card-body", "link-label"].includes(event.target.id) || !editBase) return;
   history = commitFrom(history, editBase, history.present);
   if (editBase !== history.present) persist();
-  editBase = null; render();
+  editBase = null; renderMeta();
 });
 $("#minimap-svg").addEventListener("click", (event) => {
   const svg = event.currentTarget, rect = svg.getBoundingClientRect();
-  const worldX = Number(svg.dataset.left) + (event.clientX - rect.left) / Number(svg.dataset.scale);
-  const worldY = Number(svg.dataset.top) + (event.clientY - rect.top) / Number(svg.dataset.scale);
+  const worldX = Number(svg.dataset.left) + (event.clientX - rect.left - 10) / Number(svg.dataset.scale);
+  const worldY = Number(svg.dataset.top) + (event.clientY - rect.top - 8) / Number(svg.dataset.scale);
   viewport = { ...viewport, x: canvas.clientWidth / 2 - worldX * viewport.zoom, y: canvas.clientHeight / 2 - worldY * viewport.zoom };
   renderViewport();
 });

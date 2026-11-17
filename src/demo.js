@@ -10,7 +10,7 @@ export function makeDemoBoard() {
     { id: "gallery", type: "location", title: "Blackwell Gallery", body: "East wing  ·  Camera 04 went dark", x: 835, y: 435 },
     { id: "timeline", type: "note", title: "A missing 17 minutes", body: "The security log jumps from 11:42 to 11:59. Who had access to the control room?", x: 350, y: 650 },
     { id: "receipt", type: "evidence", title: "Unmarked receipt", body: "A cash payment at 12:06 AM, two blocks away. Initials: M.V.", x: 1110, y: 250 },
-    { id: "question", type: "note", title: "Working theory", body: "The blackout wasn't a failure. It was a window.", x: 820, y: 735 },
+    { id: "question", type: "note", title: "Working theory", body: "The blackout wasn't a failure. It was a window.", x: 650, y: 735 },
   ];
   for (const card of cards) board = addCard(board, card).board;
   for (const [from, to, label] of [
